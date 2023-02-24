@@ -2,9 +2,9 @@ name: CodeQL
 
 on:
   push:
-    branches: [ main ]
+    branches: [ i190651]
   pull_request:
-    branches: [ main ]
+    branches: [ i190651 ]
 
 jobs:
   analyze:
@@ -39,8 +39,6 @@ jobs:
         # List of libraries to include in the analysis
         # See https://help.semmle.com/codeql/codeql-cli/reference/libraries.html
         # for more information
-        libraries: |
-          python
 
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v1
