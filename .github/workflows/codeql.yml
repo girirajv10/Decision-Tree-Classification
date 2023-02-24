@@ -2,7 +2,7 @@ name: CodeQL Linter
 
 on:
   push:
-    branches: [main]
+    branches: [i190651]
 
 jobs:
   build:
@@ -32,3 +32,5 @@ jobs:
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: result.sarif
+        paths: 
+          '**/*.ipynb'
