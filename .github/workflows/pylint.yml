@@ -20,3 +20,7 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         find . -name '*.py' -exec pylint {} \;
+    - name: Python Pylin GitHub Action
+      uses: fylein/python-pylint-github-action@v1
+      with:
+       args: pip3 install -r reqs.txt && pylint --rcfile=.pylintrc 
