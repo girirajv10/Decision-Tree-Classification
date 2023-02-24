@@ -15,6 +15,9 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
+      
+    - name: My Local Action
+      uses: ./.github/actions/my-local-action
 
     - name: Setup CodeQL
       uses: github/codeql-action/setup@v1
