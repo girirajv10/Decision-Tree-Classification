@@ -1,47 +1,34 @@
-name: CodeQL
+name: CodeQL Linter
 
 on:
   push:
-    branches: [ i190651]
-  pull_request:
-    branches: [ i190651 ]
+    branches: [main]
 
 jobs:
-  analyze:
-    name: Analyze code with CodeQL
+  build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        language: [ python ]
+        language: [python]
 
     steps:
-    - name: Checkout repository
+    - name: Checkout Code
       uses: actions/checkout@v2
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+    - name: Setup CodeQL
+      uses: github/codeql-action/setup@v1
+      with:
+        languages: ${{ matrix.language }}
+        auto-configure: true
+        output-format: 'sarif'
 
     - name: Analyze code
-      uses: github/codeql-action/analyze@v2
+      run: |
+        codeql database create --language=${{ matrix.language }} --source-root=. ${{ matrix.language }}.db
+        codeql analyze --database=${{ matrix.language }}.db --output=result.sarif
+
+    - name: Upload results
+      uses: github/codeql-action/upload-sarif@v1
       with:
-        # Path to the CodeQL database
-        database-path: codeql-database
-
-        # Path to the CodeQL query to run
-        query: python/example.ql
-
-        # Path to the Jupyter Notebook
-        # You can include individual files or directories
-        # Here, we are including all Jupyter Notebooks in the repository
-        paths: '**/*.ipynb'
-
-        # List of libraries to include in the analysis
-        # See https://help.semmle.com/codeql/codeql-cli/reference/libraries.html
-        # for more information
-
-    - name: Upload SARIF file
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        # Path to the SARIF file
-        sarif_file: codeql-database/results.sarif
+        sarif_file: result.sarif
